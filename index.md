@@ -1,37 +1,81 @@
-## Welcome to GitHub Pages
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-title" content="珠峰培训"/>
+    <title>珠峰培训-WEBAPP开发</title>
+    <script src="js/jquery-1.11.1.js" type="text/javascript"></script>
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="css/reset.min.css"/>
+    
+    <style>
+	
+    #a{
+        display: block;
+        width: 200px;
+        height: 100px;
+        background: pink;
+    }
 
-You can use the [editor on GitHub](https://github.com/1760433129/test/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+        #b{
+        width: 200px;
+        height: 100px;
+        background: blue;
+         display: block;
+        -webkit-animation:fadeEffect 1s;
+        animation:fadeEffect 1s;
+    }
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+    @-webkit-keyframes fadeEffect{
+        from{opacity: 0;}
+        to{opacity: 1;}
+    }
+    @keyframes fadeEffect{
+        from{opacity: 0;}
+        to{opacity: 1;}
+    }
 
-### Markdown
+    </style>
+</head>
+<body>
+<div id="a">不</div>
+<div id="b" >不</div>
+ 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+<script type="text/javascript">
 
-```markdown
-Syntax highlighted code block
+document.getElementById('a').onclick=function(){
+    var b=document.getElementById('b');
+    if(b.style.display!=='none'){
+        b.style.display='none';
 
-# Header 1
-## Header 2
-### Header 3
+    }
+    else{
+        b.style.display="block";
+    }
+}
 
-- Bulleted
-- List
 
-1. Numbered
-2. List
+/*var nav=$("#b").css('height',23).height();*/
+/*
+$("#b").css('height',63);
+$("#b").height(120);*/
 
-**Bold** and _Italic_ and `Code` text
+// var a=document.getElementById('#b').height;
+// alert(a);
 
-[Link](url) and ![Image](src)
-```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+ 
+</script>
 
-### Jekyll Themes
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/1760433129/test/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
-### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
+
+</body>
+</html>
