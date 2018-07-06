@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>修行个人网站  </title>
+<script src="js/move2.js"></script>
+</head>
+<link rel="stylesheet" type="text/css" href="css/liuyan.css">
+<body>
+	<header>
+		<div id="mnavh">
+			<div class="logo">
+			<a href="/">修行个人网站</a>	
+			</div>
+			<ul id="starlist">
+				<li><p><a href="/" target="_blank">网站首页</a></p></li>
+				<li><p><a href="/" target="_blank">博客日记</a></p></li>
+				<li><p><a href="/" target="_blank">学无止境</a></p></li>
+				<li><p><a href="/" target="_blank">慢生活</a></p></li>
+				<li><p><a href="/" target="_blank">关于我</a></p></li>
+				<li class="active"><p><a href="/" target="_blank">留言</a></p></li>
+			</ul>
+		</div>
+	</header>
+	<article>
+		<textarea id="txt1" rows="1" cols="70" width: 663px;
+height: 37px;></textarea><br />
+<input id="btn1" type="button" value="发布" />
+<div id="ul1"></div>
+
+	</article>
+	<footer>
+		<p>
+		Design by 
+		<a href="/">修行个人博客</a>
+		<a href="/">广东省湛江市麻章区修行网络路34号</a>
+		 </p>
+	</footer>
+</body>
+  <script type="text/javascript">
+    window.onload=function(){
+      var oBtn=document.getElementById('starlist').getElementsByTagName('li');
+      var i=0;
+      //alert(oBtn.length)
+   
+     for (i=0; i<oBtn.length;i++)
+          {
+     
+        oBtn[i].onclick=function()
+        {
+          for (i=0; i<oBtn.length;i++)
+          {
+        oBtn[i].index=i;//给按钮加入索引值index
+        //alert(i)
+            oBtn[i].className='';
+
+          }
+          this.className='active';
+        
+          //alert('点击了第'+this.index+'个按钮');
+          
+        }
+      };
+ };
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+ var oTxt=document.getElementById('txt1');
+  var oBtn=document.getElementById('btn1');
+  var oUl=document.getElementById('ul1');
+  
+  oBtn.onclick=function ()
+  {
+    var myDate = new Date();
+    var weekday=new Array(7);
+    weekday[0]="周日";
+    weekday[1]="周一";
+    weekday[2]="周二";
+    weekday[3]="周三";
+    weekday[4]="周四";
+    weekday[5]="周五";
+    weekday[6]="周六";
+    var oLi=document.createElement('div');
+    var aLi=oUl.getElementsByTagName('div');
+    
+    oLi.innerHTML=oTxt.value+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+myDate.getFullYear()+'&nbsp;/ &nbsp;'+(myDate.getMonth()+1)+'&nbsp;/ &nbsp'+(myDate.getDay()+1)+'&nbsp;&nbsp;&nbsp;'+weekday[myDate.getDay()];
+    oTxt.value='';
+    
+    if(aLi.length)
+    {
+      oUl.insertBefore(oLi, aLi[0]);
+    }
+    else
+    {
+      oUl.appendChild(oLi);
+    }
+    
+    var iHeight=oLi.offsetHeight;
+    oLi.style.height=0;
+    
+    startMove(oLi, {height: iHeight}, function (){
+      startMove(oLi, {opacity: 100});
+    });
+    //oUl.appendChild(oLi);
+  };
+
+
+
+
+
+
+    
+</script>
+</html>
