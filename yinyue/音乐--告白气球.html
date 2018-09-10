@@ -1,0 +1,339 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>音乐快进快退暂停，歌词加载</title>
+<style>
+    .song_lyric_container{
+          margin-top: 30px;
+    height: 150px;
+    overflow: hidden; 
+    background: green;
+   
+    }
+    .bg{
+       background: green;
+    }
+    .song_lyric{
+    text-align: center;
+}
+    .song_lyric li{
+    list-style: none;
+    line-height: 30px;
+    font-weight: bold;
+    color: rgba(255,255,255,0.5);
+}
+    .song_lyric .cur{
+    color:red;
+   
+}
+</style>
+ <script src="jquery-1.12.4.js"></script>
+<script type="text/javascript">
+var audio = document.createElement("audio");
+  audio.src = "./告白气球.mp3";
+
+function aPlay() {
+	audio.play();
+  
+}
+function aPause() {
+	audio.pause();
+}
+function aStop() {
+	audio.currentTime = 0;
+	audio.pause();
+}
+function aSkip() {
+	audio.currentTime = 50;
+	audio.play();
+ }
+ function ayi() {
+	audio.volume = 0;
+ }
+ function ayu1() {
+	audio.volume =0.3;
+ }
+  function ayu2() {
+	audio.volume =1;
+ }
+ function go() {
+	audio.currentTime += 10;
+	audio.play();
+}
+
+var times=[];
+ var lyrics=[];
+
+
+ $.ajax({
+          url: "./告白气球.txt",
+          method: 'GET',
+          dataType: 'text',
+          //cache: false,
+          success: function (data) {
+        
+          //console.log(data)
+            var array = data.split("\n");
+         // console.log(array)
+             var timeReg = /\[(\d*:\d*\.\d*)\]/    //正则匹配时间格式 // [00:00.92]
+            // 遍历取出每一条歌词
+            $.each(array, function (index, ele) {//index 索引     ele 表示数组的结果
+              var lrc = ele.split("]")[1];//根据【】切割歌词，并取切割后歌词其中的第一个
+               // 排除空字符串(没有歌词的)
+                if(lrc.length == 1) return true;
+                lyrics.push(lrc);
+
+             //console.log(ele)
+               var res = timeReg.exec(ele);  //exec() 方法用于检索字符串中的正则表达式的匹配。
+               //如果字符串中有匹配的值返回该匹配值，否则返回 null。
+              // console.log(res);
+                 if(res == null) return true;
+                 var timeStr = res[1]; // 00:00.92
+                // console.log(timeStr)
+                var res2 = timeStr.split(":");
+               // console.log(res2)
+                var min = parseInt(res2[0]) * 60;
+               // console.log(min)
+                var sec = parseFloat(res2[1]);
+                // console.log(sec)
+                //parseFloat() 函数可解析一个字符串，并返回一个浮点数。
+//该函数指定字符串中的首个字符是否是数字。如果是，则对字符串进行解析，直到到达数字的末端为止，然后以数字//返回该数字，而不是作为字符串
+// 字符串中只返回第一个数字。
+//注意： 开头和结尾的空格是允许的。
+//注意： 如果字符串的第一个字符不能被转换为数字，那么 parseFloat() 会返回 NaN。
+                var time = parseFloat(Number(min + sec).toFixed(2)) ; //toFixed(2) 保留两位小数
+              console.log(time)
+                times.push(time);
+                //var lrc = ele.split("]");
+                //var lrc = ele.split("]")[1];
+                //console.log(lrc)
+                //lyrics.push(lrc);
+            })
+     //console.log(times)
+  
+// var $lryicContainer = $(".song_lyric");
+  for(var i=0;i<lyrics.length;i++){
+        $(".song_lyric").append('<li>'+lyrics[i]+'</li>');
+
+      }
+audio.addEventListener("timeupdate",scrollLyric);
+
+  function scrollLyric(currentTime){    //滚动歌词
+    var currentTime=parseFloat((audio.currentTime).toFixed(2)) ;
+   console.log(currentTime);
+  // console.log(times)
+
+      for(var i=0;i<times.length;i++){
+
+       if( i != times.length - 1 && currentTime > times[i] && currentTime < times[i+1] ){
+         
+         $(".song_lyric li").eq(i).addClass('cur').siblings().removeClass("cur");
+         if(i>3){
+           $(".song_lyric").css({marginTop: (-(i-2)) * 30});
+          }
+          
+          }
+          
+        }
+       /* else if(i == time.length-1 && ct > time[i][0]){
+         // $li.eq(i).attr('class','cur').siblings().attr('class','');
+          //$detailsLyricUl.css('transform','translate3d(0,'+(-iLiH*(i-3))+'px,0)');
+        }*/
+      
+    }
+
+    
+          }
+
+
+
+
+
+
+ 
+
+
+        });
+
+
+/* 
+  function formatDat(currentTime) {
+           
+            var startMin = parseInt(currentTime / 60); // 2
+            var startSec = parseInt(currentTime % 60);
+            if(startMin < 10){
+                startMin = "0" + startMin;
+            }
+            if(startSec < 10){
+                startSec = "0" + startSec;
+            }
+            return startMin+":"+startSec;
+        };
+
+
+*/
+
+
+
+
+
+
+  //var duration=audio.duration;//audio.duration 歌曲的系统自带语法，获取总时长
+ // var currentTime=audio.currentTime;//audio.duration 歌曲的系统自带语法，获取当前歌曲播放对应的时间
+  
+
+
+    //时间格式的转化显示（播放的当前时间）
+
+ function formatDat(currentTime) {
+           
+            var startMin = parseInt(currentTime / 60); // 2
+            var startSec = parseInt(currentTime % 60);
+            if(startMin < 10){
+                startMin = "0" + startMin;
+            }
+            if(startSec < 10){
+                startSec = "0" + startSec;
+            }
+            return startMin+":"+startSec;
+        };
+
+
+
+
+
+  
+  function formatDate(currentTime, duration) {
+            var endMin = parseInt(duration / 60); // 2   parseInt 函数可解析一个字符串，并返回一个整数。
+            var endSec = parseInt(duration % 60);
+            if(endMin < 10){
+                endMin = "0" + endMin;
+            }
+            if(endSec < 10){
+                endSec = "0" + endSec;
+            }
+
+            var startMin = parseInt(currentTime / 60); // 2
+            var startSec = parseInt(currentTime % 60);
+            if(startMin < 10){
+                startMin = "0" + startMin;
+            }
+            if(startSec < 10){
+                startSec = "0" + startSec;
+            }
+            return startMin+":"+startSec+" / "+endMin+":"+endSec;
+        };
+
+
+
+ 
+audio.addEventListener("timeupdate",function(){ 
+//歌曲的监听事件
+  var duration=audio.duration;//audio.duration 歌曲的系统自带语法，获取总时长
+  var currentTime=audio.currentTime;//audio.duration 歌曲的系统自带语法，获取当前歌曲播放对应的时间
+    
+  var timeSt1=formatDat(currentTime);
+    var timeSt2=formatDate(duration);
+
+  var timeStr=formatDate(currentTime, duration);
+    //console.log(timeStr)
+
+
+    document.getElementById("ltime").innerHTML =timeStr;//加载歌曲时长
+    document.getElementById("ctime").innerHTML = timeSt1;//加载当前歌曲播放对应的时间
+
+  //console.log(timeSt1)
+ 
+});
+
+
+
+
+
+
+
+
+function back() {
+  audio.currentTime -= 10;
+  audio.play();
+}
+
+
+// 3.初始化歌词信息
+   
+        
+
+
+
+
+
+
+/*
+ getPlayerList();
+    function getPlayerList() {
+        $.ajax({
+            url: "./凉凉.txt",
+            dataType: "text",
+            success: function (responseText) {
+               console.log(responseText)
+             
+
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+
+  //document.getElementById("t").innerHTML =timeStr;
+    }
+
+lyric = new Lyric(music.link_lrc);
+var $lryicContainer = $(".song_lyric");
+
+   function parseLyric(responseText) {
+    var array = responseText.split("\n");
+    console.log(array)
+     var timeReg = /\[(\d*:\d*\.\d*)\]/;
+     //console.log(timeReg)
+      $.each(array, function (responseText) {
+         console.log(timeReg)
+      });
+                // 处理歌词
+   }
+*/
+
+
+    </script>
+</head>
+<body>
+ 歌名：告白气球
+<br/>
+ 总时长：
+<div id="ltime">
+</div>
+<br/>
+当前播放：
+<div id="ctime">
+</div>
+<br/>
+<input type="button" onclick="aPlay();" value="播放音频">
+<input type="button" onclick="aPause();" value="暂停音频">
+<input type="button" onclick="aStop();" value="停止音频">
+<input type="button" onclick="aSkip();" value="跳到第50秒">
+<input type="button" onclick="ayi();" value="静音">
+<input type="button" onclick="ayu1();" value="音量1">
+<input type="button" onclick="ayu2();" value="音量2">
+<input type="button" onclick="go();" value="快进10秒">
+<input type="button" onclick="back();" value="快退10秒">
+
+
+<div class="song_lyric_container">
+<!-- 加个外围div，防止歌词不在规定的区域内滚动 -->
+  <div class="bg">   
+    <ul class="song_lyric"></ul>
+  </div>
+</div>
+</body>
+</html>
+      
